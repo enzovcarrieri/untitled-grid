@@ -208,6 +208,7 @@
         <div class="sec-title">Export</div>
         <div class="row">
           <button class="btn-light" id="btnPng">PNG</button>
+          <button class="btn-light" id="btnPoster">Poster</button>
           <button class="btn-light" id="btnLink">Copy link</button>
         </div>
       </section>
@@ -237,8 +238,29 @@
       <div><kbd>↑↓←→</kbd> Focus</div><div><kbd>↵</kbd> Apply</div><div><kbd>⇧1</kbd> Fit</div>
     </div>
     <div class="about-foot">
-      <span class="mono muted">An experimental interface — 2026</span>
+      <p class="credit">Idea and art direction by <strong>@enzocarrieri</strong><br><a href="https://work.enzocarrieri.com" target="_blank" rel="noopener">work.enzocarrieri.com</a><br>Developed with Claude Code, Anthropic’s AI · 2026</p>
       <button class="btn-primary" id="btnEnter" autofocus>Enter the grid</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- ───────── Poster ───────── -->
+<dialog id="posterDlg" aria-labelledby="posterTitle">
+  <div class="poster-head">
+    <div>
+      <h2 id="posterTitle">Poster</h2>
+      <p class="mono muted" id="posterMeta"></p>
+    </div>
+    <button class="icon-btn" id="btnPosterClose" aria-label="Close">
+      <svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+    </button>
+  </div>
+  <div class="poster-stage"><canvas id="posterCanvas" aria-label="Poster preview"></canvas></div>
+  <div class="poster-foot">
+    <p class="note" id="posterStatus" role="status" aria-live="polite"></p>
+    <div class="row">
+      <button class="btn-light" id="btnPosterPng">PNG</button>
+      <button class="btn-primary" id="btnPosterSvg">Download SVG</button>
     </div>
   </div>
 </dialog>
@@ -247,5 +269,7 @@
 <script src="js/render.js"></script>
 <script src="js/app.js"></script>
 <script src="js/ghosts.js"></script>
+<script src="js/svgctx.js"></script>
+<script src="js/poster.js"></script>
 </body>
 </html>

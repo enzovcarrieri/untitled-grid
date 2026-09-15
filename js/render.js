@@ -78,6 +78,7 @@
 
   const hatches = new Map();
   function hatch(ctx, color) {
+    if (ctx.isSVG) return ctx.hatch(color);
     let p = hatches.get(color);
     if (!p) {
       const c = document.createElement('canvas');
@@ -95,6 +96,7 @@
     }
     return p;
   }
+  UG.hatch = hatch;
 
   function letter(ctx, n, x, y, w, h, style, outline) {
     const odd = n.r % 2 === 1;

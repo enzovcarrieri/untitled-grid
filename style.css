@@ -367,7 +367,30 @@ dialog#about::backdrop { background: rgba(230,230,234,.72); backdrop-filter: blu
 }
 .shortcuts kbd { margin-right: 5px; }
 .about-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-.about-foot .mono { font-size: 10px; }
+.about-body .credit { margin: 0; font: 400 10px/1.7 var(--mono); color: var(--muted); }
+.about-body .credit strong { font-weight: 500; color: var(--text); }
+.about-body .credit a { color: var(--text); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.about-body .credit a:hover { text-decoration-color: var(--signal); }
+
+/* ───── Poster ───── */
+dialog#posterDlg {
+  padding: 0; border: 1px solid var(--line);
+  border-radius: 14px;
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  box-shadow: 0 30px 90px rgba(10,10,30,.28);
+  color: var(--text);
+  overflow: auto;
+}
+dialog#posterDlg::backdrop { background: rgba(230,230,234,.72); backdrop-filter: blur(2px); }
+.poster-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 20px 14px; }
+.poster-head h2 { font: 500 18px/1.2 var(--ui); letter-spacing: -.01em; margin: 0 0 4px; }
+.poster-head p { margin: 0; font-size: 10px; }
+.poster-stage { display: grid; place-items: center; padding: 24px 20px; background: #E6E6EA; border-block: 1px solid var(--line); }
+#posterCanvas { display: block; width: 100%; max-width: 420px; height: auto; box-shadow: 0 10px 32px rgba(10,10,30,.18); }
+.poster-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 14px 20px 18px; }
+.poster-foot .note { margin: 0; max-width: 34ch; }
+.poster-foot .btn-light { flex: none; padding: 0 14px; height: 30px; }
 
 /* ───── Responsive ───── */
 @media (max-width: 1080px) {

@@ -16,6 +16,8 @@ Open `index.html` in a browser.
 | `js/render.js` | Canvas renderer: construction layer, glyphs, fusion, overlays |
 | `js/app.js` | Input, panels, history, erosion of the interface, sharing |
 | `js/ghosts.js` | Recorded sessions, ghost replay, live cursors |
+| `js/poster.js` | A2 poster of the current state (PNG and SVG) |
+| `js/svgctx.js` | Canvas-compatible context that records vector SVG |
 | `data/ghosts.json` | Archive of recorded sessions every visitor can meet |
 
 ## Publish on GitHub Pages (free, browser only)

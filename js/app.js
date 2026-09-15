@@ -289,7 +289,7 @@
   addEventListener('keydown', (ev) => {
     if (ev.key === 'Shift' && !state.shift) { state.shift = true; dirty = true; }
     const tag = ev.target.tagName;
-    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || $('about').open) return;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || document.querySelector('dialog[open]')) return;
     const mod = ev.metaKey || ev.ctrlKey;
     const k = ev.key.toLowerCase();
 
@@ -599,14 +599,10 @@
     state.clean = true;
     R.draw(performance.now());
     state.clean = false;
-    canvas.toBlob((blob) => {
+    canvas.toBlob(async (blob) => {
       if (!blob) return;
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `untitled-grid-${world.seed}-${cursor}.png`;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-      toast('Exported.');
+      const result = await UG.saveFile(`untitled-grid-${world.seed}-${cursor}.png`, blob);
+      toast(result === 'saved' ? 'Exported.' : result === 'declined' ? 'Export cancelled.' : 'This view cannot save files.');
     });
     dirty = true;
   });
@@ -675,8 +671,8 @@
   const ERODE_SEL = [
     '.panel .tab', '.page-item', '.sec-title', '.rule-name', '.rule-desc', '.slider', '.segmented button',
     '.text-input', '.check', '.props dt', '.props dd', '.note', '.sub', '.field', '.layers li', '.empty',
-    '.btn-light', '.tb-center .crumb', '.tb-center .filename', '.badge', '#btnAuto', '#btnShare', '.mobile-toggles button'
-  ].join(',');
+    '.btn-light', '.tb-center .crumb', '.tb-center .filename', '.badge', '#btnAuto', '#btnShare'
+  ].join(','); // the mobile Layers/Design toggles stay intact: on a phone they are the only way to the panels
   const EFFECT = { B: 'bond', S: 'split', R: 'rot', M: 'mir', I: 'inv', T: 'type', W: 'type', G: 'void' };
   const MUTANTS = ['bond', 'split', 'rot', 'mir', 'inv', 'void', 'type'];
   const MILESTONES = [
@@ -685,7 +681,7 @@
     [72, 'There is no longer an outside.']
   ];
   const ERODE_START = 20, ERODE_RATE = 1.2, COLLAPSE_AT = 72;
-  let erodedCount = 0, pressureN = 0, leakDpr = 1, leakClear = true;
+  let erodedCount = 0, pressureN = 0, leakDpr = 1, leakClear = true, integrity = '100%';
 
   function erode(live) {
     const prevN = pressureN;
@@ -747,7 +743,8 @@
     document.body.classList.toggle('ug-collapse', collapse);
     if (live) for (const [at, msg] of MILESTONES) if (prevN < at && n >= at) toast(msg);
     erodedCount = target;
-    $('statIntegrity').textContent = (collapse ? 0 : Math.round(100 * (1 - target / Math.max(1, els.length)))) + '%';
+    integrity = (collapse ? 0 : Math.round(100 * (1 - target / Math.max(1, els.length)))) + '%';
+    $('statIntegrity').textContent = integrity;
   }
 
   $('chkContain').addEventListener('change', (ev) => { state.contain = ev.target.checked; erode(false); });
@@ -826,7 +823,12 @@
     }
   }
 
-  UG.app = { state, world, R, toast, markDirty: () => { dirty = true; } };
+  UG.app = {
+    state, world, R, toast,
+    markDirty: () => { dirty = true; },
+    get moves() { return moves.slice(0, cursor); },
+    get integrity() { return integrity; }
+  };
 
   /* ───── Init ───── */
   sizeLeak();
