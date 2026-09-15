@@ -690,7 +690,7 @@
     pressureN = n;
     dirty = true;
 
-    const els = [...document.querySelectorAll(ERODE_SEL)].filter((el) => !el.closest('.keep'));
+    const els = [...document.querySelectorAll(ERODE_SEL)].filter((el) => !el.closest('.keep, dialog')); // dialogs stay readable
     const target = Math.min(els.length, Math.max(0, Math.floor((n - ERODE_START) * ERODE_RATE)));
 
     // Measure before touching classes, so settled elements don't re-animate.
