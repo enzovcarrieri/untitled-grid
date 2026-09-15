@@ -574,7 +574,8 @@
   function writeHash() {
     const c = state.cam;
     const h = `#seed=${encodeURIComponent(world.seed)}&v=${Math.round(c.x)},${Math.round(c.y)},${c.z.toFixed(2)}&f=${state.fuse}&pal=${state.palette}` +
-      (cursor ? `&m=${UG.encodeMoves(moves.slice(0, cursor))}` : '');
+      (cursor ? `&m=${UG.encodeMoves(moves.slice(0, cursor))}` : '') +
+      (UG.demoMode ? '&' + UG.demoMode : '');
     try { history.replaceState(null, '', h); } catch (_) { /* sandboxed host */ }
   }
 
@@ -825,6 +826,9 @@
 
   UG.app = {
     state, world, R, toast,
+    commit, scrub, setTool, setParam, setSpread, setPalette, newSeed, toggleAuto,
+    setCamera: (x, y, z) => { state.cam = { x, y, z }; afterCamera(); },
+    get total() { return moves.length; },
     markDirty: () => { dirty = true; },
     get moves() { return moves.slice(0, cursor); },
     get integrity() { return integrity; }
